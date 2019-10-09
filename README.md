@@ -24,7 +24,7 @@ var showdown  = require('dessert-showdown'),
 
 ### Output 
 
-Both examples should output...
+This example should output...
 
 ```html
     <h1 id="hellomarkdown">hello, markdown!</h1>
@@ -123,7 +123,7 @@ var thisConverterSpecificOptions = converter.getOptions();
    ```
 
  * **simpleLineBreaks**: (boolean) [default false] Parses line breaks as `<br>`, without
-   needing 2 spaces at the end of the line **(since v1.5.1)**
+   needing 2 spaces at the end of the line
  
    ```md
    a line  

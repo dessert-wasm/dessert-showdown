@@ -1,22 +1,31 @@
-# Dessert Showdown
+[![](https://user-images.githubusercontent.com/25987204/78205790-10b0c680-74d8-11ea-9767-5bb93e920044.png)](https://dessert.dev/)
 
-Clone of [showdown](https://github.com/showdownjs/showdown) implemented in Rust for WebAssembly
+Dessert Showdown
+============
 
-## Summary
+[![npm-badge]][npm-url]
+[![license-badge]][license]
+
+[npm-badge]: https://img.shields.io/npm/v/dessert-showdown.svg
+[npm-url]: https://www.npmjs.org/package/dessert-showdown
+[license-badge]: https://img.shields.io/github/license/dessert-wasm/dessert-showdown
+[license]: LICENSE_MIT
+
+> [showdown], but implemented with Rust and WebAssembly  
+
+[showdown]: (https://github.com/showdownjs/showdown)
+
+## Table of contents
+* [Usage](#usage)
+* [API](#api)
 * [Installation](#installation)
-* [Quick Example](#quickexample)
+* [License](#license)
+* [Contributing](#contributing)
 
-## Installation
-```sh
-npm install dessert-showdown
-```
-
-## Quick Example
-
-### Node
+## Usage
 
 ```js
-var showdown  = require('dessert-showdown'),
+var showdown  = require('showdown'),
     converter = new showdown.Converter(),
     text      = '# hello, markdown!',
     html      = converter.makeHtml(text);
@@ -24,15 +33,15 @@ var showdown  = require('dessert-showdown'),
 
 ### Output 
 
-This example should output...
-
 ```html
     <h1 id="hellomarkdown">hello, markdown!</h1>
 ```
 
-## Options
+## API
 
-You can change some of dessert-showdown's default behavior through options. 
+### Options
+
+You can change some of showdown's default behavior through options. 
 
 ### Setting options
 
@@ -40,7 +49,7 @@ Options can be set:
 
 #### Globally
 
-Setting a "global" option affects all instances of dessert-showdown
+Setting a "global" option affects all instances of showdown
 
 ```js
 showdown.setOption('optionKey', 'value');
@@ -63,7 +72,7 @@ Local options can be set:
 
 ### Getting an option
 
-Dessert-showdown provides 2 methods (both local and global) to retrieve previous set options.
+Showdown provides 2 methods (both local and global) to retrieve previous set options.
 
 #### getOption()
 
@@ -85,9 +94,35 @@ var showdownGlobalOptions = showdown.getOptions();
 var thisConverterSpecificOptions = converter.getOptions();
 ```
 
-### Valid Options
+### Retrieve the default options
 
+You can get showdown's default options with:
+```js
+var defaultOptions = showdown.getDefaultOptions();
+```
+
+### Valid Options
  * **noHeaderId**: (boolean) [default false] Disable the automatic generation of header ids.
+   Setting to true overrides **prefixHeaderId**
+
+ * **customizedHeaderId**: (boolean) [default false] Use text in curly braces as header id.
+   Example:
+   ```
+   ## Sample header {real-id}     will use real-id as id
+   ```
+
+ * **ghCompatibleHeaderId**: (boolean) [default false] Generate header ids compatible with github style
+   (spaces are replaced with dashes and a bunch of non alphanumeric chars are removed)
+
+ * **prefixHeaderId**: (string/boolean) [default false] Add a prefix to the generated header ids.
+   Passing a string will prefix that string to the header id. Setting to `true` will add a generic 'section' prefix.
+
+ * **rawPrefixHeaderId**: (boolean) [default false] Setting this option to true will prevent showdown from modifying the prefix.
+   This might result in malformed IDs (if, for instance, the " char is used in the prefix).
+   Has no effect if prefixHeaderId is set to false.
+
+ * **rawHeaderId**: (boolean) [default false] Remove only spaces, ' and " from generated header ids (including prefixes),
+    replacing them with dashes (-). WARNING: This might result in malformed ids 
  
  * **headerLevelStart**: (integer) [default 1] Set the header starting level. For instance, setting this to 3 means that
 
@@ -99,9 +134,8 @@ var thisConverterSpecificOptions = converter.getOptions();
     ```html
     <h3>foo</h3>
     ```
-
- * **literalMidWordAsterisks**: (boolean) [default false] Turning this on will stop dessert-showdown from interpreting asterisks
-   in the middle of words as `<em>` and `<strong>` and instead treat them as literal asterisks.
+ * ~~**literalMidWordAsterisks**: (boolean) [default false] Turning this on will stop showdown from interpreting asterisks
+   in the middle of words as `<em>` and `<strong>` and instead treat them as literal asterisks.~~
    
  * **strikethrough**: (boolean) [default false] Enable support for strikethrough syntax.
    `~~strikethrough~~` as `<del>strikethrough</del>`
@@ -114,6 +148,8 @@ var thisConverterSpecificOptions = converter.getOptions();
    | 100   | [a][1]  | ![b][2] |
    | *foo* | **bar** | ~~baz~~ |
    ```
+   
+   See the wiki for more info
 
  * **tasklists**: (boolean) [default false] Enable support for GFM tasklists. Example:
  
@@ -121,7 +157,7 @@ var thisConverterSpecificOptions = converter.getOptions();
     - [x] This task is done
     - [ ] This is still pending
    ```
-
+    
  * **simpleLineBreaks**: (boolean) [default false] Parses line breaks as `<br>`, without
    needing 2 spaces at the end of the line
  
@@ -137,6 +173,25 @@ var thisConverterSpecificOptions = converter.getOptions();
    wrapped in two</p>
    ```
 
-## Credits
-Showdown full credit list at https://github.com/showdownjs/showdown/blob/master/CREDITS.md
+ * **requireSpaceBeforeHeadingText**: (boolean) [default false] Makes adding a space between `#` and the header text mandatory
+ 
+ * **ghMentions**: (boolean) [default false] Enables github @mentions, which link to the username mentioned
+ 
+ * **ghMentionsLink**: (string) [default `https://github.com/{u}`] Changes the link generated by @mentions.
+   Showdown will replace `{u}` with the username. Only applies if ghMentions option is enabled.
+   Example: `@tivie` with ghMentionsOption set to `//mysite.com/{u}/profile` will result in `<a href="//mysite.com/tivie/profile">@tivie</a>`
+ 
+ * **emoji**: (boolean) [default false] Enable emoji support. Ex: `this is a :smile: emoji`
+   For more info on available emojis, see https://github.com/showdownjs/showdown/wiki/Emojis
 
+## Installation
+With [npm](https://npmjs.org/):
+```shell
+npm install dessert-showdown
+```
+
+## License
+This software is licensed under the MIT license (see [LICENSE](LICENSE_MIT)).
+
+## Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md)

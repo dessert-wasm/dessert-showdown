@@ -5,7 +5,7 @@ getOptions = function () {
 }
 
 getOption = function (key) {
-    return wasm.get_option();
+    return wasm.get_option(key);
 }
 
 setOption = function (key, value) {

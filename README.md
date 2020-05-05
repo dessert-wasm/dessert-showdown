@@ -13,7 +13,7 @@ Dessert Showdown
 
 > [showdown], but implemented with Rust and WebAssembly  
 
-[showdown]: (https://github.com/showdownjs/showdown)
+[showdown]: https://github.com/showdownjs/showdown
 
 ## Table of contents
 * [Usage](#usage)
